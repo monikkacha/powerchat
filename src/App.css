@@ -1,6 +1,19 @@
-.App {
-  text-align: center;
+* {
+  font-family: 'Poppins', sans-serif;
 }
+
+body {
+  background: #f6f6f6;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a{
+  text-decoration: none;
+}
+
+.App {}
 
 .App-logo {
   height: 40vmin;
@@ -35,4 +48,111 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.body-block {
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+}
+
+/* Custom CSS */
+
+.header-top {
+  width: 100%;
+  height: 70px;
+  background-color: blue;
+}
+
+.toolbar {
+  height: 70px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.toolbar div {
+  color: white;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.card {
+  padding: 24px;
+  background: white;
+  border-radius: 6px;
+  border: 1px rgba(128, 128, 128, 0.267) solid;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.login-card {
+  width: 420px;
+}
+
+.all-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% , -50%);
+}
+
+.login-heding{
+  color: blue;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.login-input {
+  padding-left: 10px;
+  height: 40px;
+  width: 400px;
+  background: rgba(128, 128, 128, 0.157);
+  outline: none;
+  border: 1px rgba(128, 128, 128, 0.267) solid;
+  font-size: 20px;
+  color: darkslategrey;
+}
+
+.login-btn {
+  width: 414px;
+  height: 46px;
+  background: blue;
+  border-radius: 2px;
+  margin-top: 40px;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.login-btn:hover{
+  background: rgba(0, 0, 255, 0.698);
+}
+
+.login-label  {
+  color: gray;
+  margin-top: 20px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.login-card p {
+  width: 100%;
+  text-align: center;
+}
+.login-card .highligh-text-color{
+  cursor: pointer;
+  color: blue;
+}
+
+.power-img {
+  display: block;
+  height: 100px;
+  width: 100px;
+  margin: auto;
 }
