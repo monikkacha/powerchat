@@ -1,0 +1,16 @@
+User Doc
+	- User 
+		- name
+		- email
+		- password
+		- bio
+		- status / online - offline
+		
+	- Msg
+		- list of all Chats
+			- from 
+			- to 
+			- data
+			- seen 
+	
+	
