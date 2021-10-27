@@ -5,3 +5,11 @@ export const setFirebaseUser = (user) => {
         payload : user,
     }
 }
+
+export const updateLoggedInStatus = (value) => {
+    console.log(" updateLoggedInStatus "+value);
+    return {
+        type : ActionConstants.UPDATE_LOGIN_STATUS ,
+        payload : value,
+    }
+}

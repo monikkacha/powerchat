@@ -18,7 +18,7 @@ const SingUp = () => {
     const signUp = () => {
         dispatch(setFirebaseUser({
             name: name, email: email, password: password, friends: [
-                { name: "dummy name 0", email: "dummy email 0" , id :""},
+                { },
             ]
         }));
         firebaseApp
