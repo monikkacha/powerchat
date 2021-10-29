@@ -1,8 +1,11 @@
 import PowerChatIcon from './../images/power_chat_icon.png';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import firebaseApp from '../firebaseInit';
+import { updateLoggedInStatus } from '../redux/actions/setFirebaseUser';
 
 const Header = () => {
+
+    const dispatch = useDispatch();
 
     const state = useSelector((state) => state.firebaseUserReducer);
 

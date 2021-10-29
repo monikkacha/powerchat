@@ -4,14 +4,21 @@ import { useState } from 'react';
 import firebaseApp from './../firebaseInit';
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { updateIsNewAccount } from '../redux/actions/setFirebaseUser';
 
 const Login = () => {
 
+    const dispatch = useDispatch();
     toast.configure();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    useEffect( () => {
+        dispatch(updateIsNewAccount(false));
+    } , []);
 
     const login = () => {
         firebaseApp

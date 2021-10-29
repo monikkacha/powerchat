@@ -7,9 +7,22 @@ export const setFirebaseUser = (user) => {
 }
 
 export const updateLoggedInStatus = (value) => {
-    console.log(" updateLoggedInStatus "+value);
     return {
         type : ActionConstants.UPDATE_LOGIN_STATUS ,
+        payload : value,
+    }
+}
+
+export const addUserId = (value) => {
+    return {
+        type : ActionConstants.ADD_USER_ID ,
+        payload : value,
+    }
+}
+
+export const updateIsNewAccount = (value) => {
+    return {
+        type : ActionConstants.UPDATE_NEW_ACCOUNT,
         payload : value,
     }
 }

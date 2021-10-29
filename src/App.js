@@ -6,8 +6,8 @@ import SingUp from './components/SingUp';
 import firebaseApp from "./firebaseInit";
 import { Dashboard } from "./components/Dashboard";
 import { ProfileDetail } from "./components/ProfileDetail";
-import { useSelector , useDispatch} from 'react-redux';
-import { updateLoggedInStatus } from "./redux/actions/setFirebaseUser";
+import { useSelector, useDispatch } from 'react-redux';
+import { updateLoggedInStatus, addUserId } from "./redux/actions/setFirebaseUser";
 import './App.css';
 
 function App() {
@@ -15,37 +15,38 @@ function App() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.firebaseUserReducer);
 
-  useEffect(() => {
-    firebaseApp.auth().onAuthStateChanged(user => {
-      
-      
-      if (user === null){
-        dispatch(updateLoggedInStatus(false));
-        return;
-      }
+  useEffect(() => listenForData, []);
 
-      if (Object.keys(state.userData).length !== 0) {
-        state.userData.uid = user.uid;
-        addUserOnFirebase();
+  const listenForData = () => {
+    firebaseApp.auth().onAuthStateChanged(user => {
+      if (user === null) {
+        dispatch(updateLoggedInStatus(false));
       } else {
-        console.log("got user");
         dispatch(updateLoggedInStatus(true));
       }
-    }
-    );
-  }, []);
-
-  const addUserOnFirebase = () => {
-    firebaseApp.database().ref("Users")
-      .child(state.userData.uid)
-      .set(state.userData)
-      .then(
-        (data) => {
-          dispatch(updateLoggedInStatus(true));
-        }).catch((err) => {
-          console.log(err);
-        });
+    });
   }
+
+  const getUserList = () => {
+    getAvailableUserProfile();
+  }
+
+  const getCurrentUserProfile = () => {
+    firebaseApp
+      .database()
+      .ref("Users")
+      .child(state.userData.uid)
+      .once("value", snapShot => {
+        console.log(snapShot.val());
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const getAvailableUserProfile = () => {
+
+  };
 
   return (
     <Router>

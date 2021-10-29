@@ -252,3 +252,61 @@ a {
   padding-left: 20px;
 }
 
+
+
+/* pop up styles */
+.outer-popup{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.164);
+}
+
+.inner-popup {
+  width: 60vw;
+  height: 70vh;
+  background: white;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(128, 128, 128, 0.40);
+}
+
+.popup-search-container{
+  flex: 10;
+  width: 100%;
+  height: 100%;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.40);
+  display: flex;
+  direction: row;
+}
+
+.popup-search-users {
+  flex: 90;
+  height: 100%;
+  width: 100%;
+}
+
+.popup-search-bar {
+  flex: 94;
+}
+
+.popup-cancel-btn{
+  flex: 6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.popup-cancel-btn:hover {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.popup-close-icon {
+  color: grey;
+}
+

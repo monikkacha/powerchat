@@ -6,31 +6,37 @@ import PowerImage from './../images/power_chat_icon.png';
 import firebaseApp from '../firebaseInit';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFirebaseUser } from './../redux/actions/setFirebaseUser';
+import { updateIsNewAccount } from './../redux/actions/setFirebaseUser';
+import { useEffect } from 'react';
 
 const SingUp = () => {
 
     const dispatch = useDispatch();
+
     toast.configure();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
 
+    useEffect(() => {
+        dispatch(updateIsNewAccount(true));
+    } , []);
+
     const signUp = () => {
-        dispatch(setFirebaseUser({
+        const userObj = {
             name: name, email: email, password: password, friends: [
-                { },
+                {},
             ]
-        }));
+        };
+        dispatch(setFirebaseUser(userObj));
         firebaseApp
             .auth()
             .createUserWithEmailAndPassword(email, password)
             .then((user) => {
-                console.log(user.user.uid);
                 toast.success("User registered successfully", { position: toast.POSITION.BOTTOM_CENTER });
             }).catch((err) => {
                 console.log(err);
                 switch (err.code) {
-
                     case "auth/email-already-in-use":
                         toast.error(err.message, { position: toast.POSITION.BOTTOM_CENTER });
                         break;
@@ -41,7 +47,6 @@ const SingUp = () => {
                         toast.error("Something went wrong please try again later", { position: toast.POSITION.BOTTOM_CENTER });
                         break;
                 }
-                dispatch(setFirebaseUser({ name: "", email: "", password: "" }));
             });
     }
 
