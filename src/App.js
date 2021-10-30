@@ -15,7 +15,7 @@ function App() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.firebaseUserReducer);
 
-  useEffect(() => listenForData, []);
+  useEffect(() => listenForData(), []);
 
   const listenForData = () => {
     firebaseApp.auth().onAuthStateChanged(user => {
@@ -26,27 +26,6 @@ function App() {
       }
     });
   }
-
-  const getUserList = () => {
-    getAvailableUserProfile();
-  }
-
-  const getCurrentUserProfile = () => {
-    firebaseApp
-      .database()
-      .ref("Users")
-      .child(state.userData.uid)
-      .once("value", snapShot => {
-        console.log(snapShot.val());
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  const getAvailableUserProfile = () => {
-
-  };
 
   return (
     <Router>
@@ -65,7 +44,7 @@ function App() {
                 <SingUp />
               </Route>
               <Route path="/dashboard" exact>
-                <SingUp />
+                <Dashboard />
               </Route>
               <Route path="/profile-detail" exact>
                 <ProfileDetail />

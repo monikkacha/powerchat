@@ -1,31 +1,71 @@
 import SearchIcon from "@material-ui/icons/Search";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SearchPopUp } from "./SearchPopUp";
+import firebaseApp from "./../firebaseInit";
+import { updateLoggedInStatus } from "../redux/actions/setFirebaseUser";
+import { setAvailableUserList, setCurrentUserData } from "../redux/actions/firebaseUsersAction";
+import ChatComponent from "./ChatComponent";
 
 export const Dashboard = () => {
 
     const state = useSelector(state => state.firebaseUserReducer);
-
+    const dispatch = useDispatch();
     const [isShowPopup, setIsShowPopUp] = useState(false);
-
     useEffect(() => initData(), []);
 
     const initData = () => {
         if (Object.keys(state.userData).length !== 0) {
             addUserOnFirebase();
         } else {
-            getUserList();
+            getUserData();
         }
     };
 
+    const getUserData = () => {
+        firebaseApp.auth().onAuthStateChanged(user => {
+            console.log(user);
+            if (user != null) {
+                getCurrentUserProfile();
+                getAvailableUserList();
+            }
+        });
+    }
+
+    const getCurrentUserProfile = () => {
+        firebaseApp
+            .database()
+            .ref("Users")
+            .child(firebaseApp.auth().currentUser.uid)
+            .once("value", snapshot => {
+                dispatch(setCurrentUserData(snapshot.val()));
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    const getAvailableUserList = () => {
+        firebaseApp
+            .database()
+            .ref("Users")
+            .on("value", snapshot => {
+                dispatch(setAvailableUserList(snapshot.val()));
+            });
+    }
+
     const addUserOnFirebase = () => {
+        if (firebaseApp.auth().currentUser === null) {
+            return;
+        }
         if (state.isNewAccount) {
-            console.log("we are in addUserOnFirebase function");
+            const userData = state.userData;
             firebaseApp.database().ref("Users")
-                .child(state.userData.uid)
-                .set(state.userData)
+                .child(firebaseApp.auth().currentUser.uid)
+                .set(
+                    { ...userData, uid: firebaseApp.auth().currentUser.uid.toString() }
+                )
                 .then(
                     (data) => {
                         dispatch(updateLoggedInStatus(true));
@@ -51,15 +91,9 @@ export const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="chat-header-name-bar">
-
                             </div>
                         </div>
-                        <div className="chat-rest-container">
-                            <div className="user-list-container">
-                            </div>
-                            <div className="chat-list-container">
-                            </div>
-                        </div>
+                        <ChatComponent />
                     </div>
                 </div>
             </div>

@@ -8,10 +8,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setFirebaseUser } from './../redux/actions/setFirebaseUser';
 import { updateIsNewAccount } from './../redux/actions/setFirebaseUser';
 import { useEffect } from 'react';
+import { useHistory } from 'react-router';
 
 const SingUp = () => {
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     toast.configure();
     const [email, setEmail] = useState('');
@@ -34,6 +36,7 @@ const SingUp = () => {
             .createUserWithEmailAndPassword(email, password)
             .then((user) => {
                 toast.success("User registered successfully", { position: toast.POSITION.BOTTOM_CENTER });
+                history.push("/dashboard");
             }).catch((err) => {
                 console.log(err);
                 switch (err.code) {
