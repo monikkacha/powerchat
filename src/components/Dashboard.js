@@ -10,10 +10,20 @@ import ChatComponent from "./ChatComponent";
 
 export const Dashboard = () => {
 
+    const [currentFriendName, setCurrentFriendName] = useState('hello');
+
     const state = useSelector(state => state.firebaseUserReducer);
+    const userData = useSelector(state => state.firebaseUserDataReducers);
+    const chatState = useSelector(state => state.firebaseChatReducers);
+
     const dispatch = useDispatch();
     const [isShowPopup, setIsShowPopUp] = useState(false);
     useEffect(() => initData(), []);
+
+    useEffect(() => {
+        const user = userData.userList.filter(user => user.uid === chatState.currentChatUserId);
+        setCurrentFriendName(user[0].name);
+    }, [chatState.currentChatUserId]);
 
     const initData = () => {
         if (Object.keys(state.userData).length !== 0) {
@@ -91,6 +101,9 @@ export const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="chat-header-name-bar">
+                                {
+                                    currentFriendName
+                                }
                             </div>
                         </div>
                         <ChatComponent />
