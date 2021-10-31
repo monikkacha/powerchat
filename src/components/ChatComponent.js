@@ -13,10 +13,8 @@ function ChatComponent() {
     const dispatch = useDispatch();
     const state = useSelector(state => state.firebaseUserDataReducers);
     const chatState = useSelector(state => state.firebaseChatReducers);
-    const [chatList, setChatList] = useState([]);
     const [chatQuery, setChatQuery] = useState('');
 
-    let count = 0;
     const changeFriend = (friend) => {
         dispatch(addUpdateCurrentChatId(friend.uid));
     }
@@ -76,7 +74,7 @@ function ChatComponent() {
             </div>
             <div className="chat-list-container">
                 <div className="chat-data-list">
-                    <ChatList chats={chatState.chats} currentChatId={chatState.currentChatUserId}/>
+                    <ChatList currentChatId={chatState.currentChatUserId}/>
                 </div>
                 <div className="chat-data-controllers">
                     <div className="send-msg-input">

@@ -34,17 +34,52 @@ export const SearchPopUp = ({ onCloseHandler }) => {
             toast.warning("Please add user from above list", { position: toast.POSITION.BOTTOM_CENTER });
             return;
         }
-        firebaseApp
-            .database()
-            .ref("Users")
-            .child(firebaseApp.auth().currentUser.uid)
-            .child("friends")
-            .push(selectedUserList)
-            .then(data => {
-                toast.success("Friends added successfully", { position: toast.POSITION.BOTTOM_CENTER })
-                onCloseHandler();
-            })
-            .catch(err => toast.error("Something went wrong please try again later", { position: toast.POSITION.BOTTOM_CENTER }));
+        let list = state.userList.filter(user => user.uid === firebaseApp.auth().currentUser.uid);
+        if (list.length > 0) {
+            if (list[0].friends) {
+                for (var i in selectedUserList) {
+                    console.log("we are in add friends on firebase : " + i);
+                    list[0].friends = [...list[0].friends, selectedUserList[i]];
+                }
+                let data = list[0].friends;
+                firebaseApp
+                    .database()
+                    .ref("Users")
+                    .child(firebaseApp.auth().currentUser.uid)
+                    .child("friends")
+                    .set(data)
+                    .then(data => {
+                        toast.success("Friends added successfully", { position: toast.POSITION.BOTTOM_CENTER })
+                        onCloseHandler();
+                    })
+                    .catch(err => toast.error("Something went wrong please try again later", { position: toast.POSITION.BOTTOM_CENTER }));
+            } else {
+                let data = selectedUserList;
+                firebaseApp
+                    .database()
+                    .ref("Users")
+                    .child(firebaseApp.auth().currentUser.uid)
+                    .child("friends")
+                    .set(data)
+                    .then(data => {
+                        toast.success("Friends added successfully", { position: toast.POSITION.BOTTOM_CENTER })
+                        onCloseHandler();
+                    })
+                    .catch(err => toast.error("Something went wrong please try again later", { position: toast.POSITION.BOTTOM_CENTER }));
+            }
+        }
+
+        // firebaseApp
+        //     .database()
+        //     .ref("Users")
+        //     .child(firebaseApp.auth().currentUser.uid)
+        //     .child("friends")
+        //     .push(selectedUserList)
+        //     .then(data => {
+        //         toast.success("Friends added successfully", { position: toast.POSITION.BOTTOM_CENTER })
+        //         onCloseHandler();
+        //     })
+        //     .catch(err => toast.error("Something went wrong please try again later", { position: toast.POSITION.BOTTOM_CENTER }));
     }
 
     return (

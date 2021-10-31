@@ -1,32 +1,38 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 
-export const ChatList = ({ chats, currentChatId }) => {
+export const ChatList = ({ currentChatId }) => {
 
+    // const [chats , setChats] = useState([]);
+
+    const chatState = useSelector(state => state.firebaseChatReducers);
     // useEffect(() => { 
-
-    // }, []);
-
+    //     setChats(chatState.chats);
+    // }, [chatState.chats]);
+    
 
     return (
         <div className="main-chat-container">
             {
-                chats.map(chat => {
-                    if (chat.from === currentChatId) {
+                chatState.chats.map(chat => {
+
+                    if (chat.from == currentChatId) {
                         return (
                             <div className="single-chat-container">
                                 <div>
-                                    <div>{chat.msg}</div>
+                                    <div className="from-msg-wrapper">{chat.msg}</div>
                                 </div>
-                                <div></div>
+                                <div className="expander"></div>
                             </div>
                         );
                     }
-                    if (chat.to === currentChatId) {
+
+                    if (chat.to == currentChatId) {
                         return (
                             <div className="single-chat-container">
-                                <div></div>
+                                <div className="expander"></div>
                                 <div>
-                                    <div>{chat.msg}</div>
+                                    <div className="to-msg-wrapper">{chat.msg}</div>
                                 </div>
                             </div>
                         );
