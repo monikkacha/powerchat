@@ -244,10 +244,14 @@ a {
 }
 
 .chat-header-search-bar, .chat-header-name-bar, .user-list-container, .chat-list-container {
-  flex: 10;
   height: 100%;
   width: 100%;
 }
+
+.chat-header-search-bar {
+  flex: 29;
+}
+
 
 .user-list-container {
   flex: 30;
@@ -503,4 +507,38 @@ a {
 
 .send-btn-wrapper:hover {
   background: rgba(0, 0, 255, 0.10);
+}
+
+.chat-header-name-bar {
+  flex: 71;
+}
+
+.chat-person-name-wrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.chat-initial-round {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 0, 184);
+  border-radius: 1000px;
+  text-transform: uppercase;
+  color: white;
+  font-size: 20px;
+
+}
+
+.chat-person-name {
+  margin-left: 12px;
+  text-transform: capitalize;
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
