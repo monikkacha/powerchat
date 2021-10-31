@@ -7,6 +7,7 @@ import firebaseApp from "./../firebaseInit";
 import { updateLoggedInStatus } from "../redux/actions/setFirebaseUser";
 import { setAvailableUserList, setCurrentUserData } from "../redux/actions/firebaseUsersAction";
 import ChatComponent from "./ChatComponent";
+import { addChatList } from "../redux/actions/chatActions";
 
 export const Dashboard = () => {
 
@@ -41,6 +42,7 @@ export const Dashboard = () => {
             if (user != null) {
                 getCurrentUserProfile();
                 getAvailableUserList();
+                getChatList();
             }
         });
     }
@@ -64,6 +66,16 @@ export const Dashboard = () => {
             .ref("Users")
             .on("value", snapshot => {
                 dispatch(setAvailableUserList(snapshot.val()));
+            });
+    }
+
+    const getChatList = () => {
+        firebaseApp
+            .database()
+            .ref("Chats")
+            .child(firebaseApp.auth().currentUser.uid)
+            .on("value", snapshot => {
+                dispatch(addChatList(snapshot.val()));
             });
     }
 

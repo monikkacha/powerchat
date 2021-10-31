@@ -1,19 +1,22 @@
 import { useSelector } from 'react-redux'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SadEmojiIcon from "@material-ui/icons/SentimentDissatisfied";
 import SendIcon from "@material-ui/icons/Send";
 import { addUpdateCurrentChatId } from '../redux/actions/chatActions';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import firebaseApp from "./../firebaseInit";
+import { ChatList } from './chatLits';
 
 function ChatComponent() {
 
     const dispatch = useDispatch();
     const state = useSelector(state => state.firebaseUserDataReducers);
     const chatState = useSelector(state => state.firebaseChatReducers);
+    const [chatList, setChatList] = useState([]);
     const [chatQuery, setChatQuery] = useState('');
 
+    let count = 0;
     const changeFriend = (friend) => {
         dispatch(addUpdateCurrentChatId(friend.uid));
     }
@@ -22,21 +25,21 @@ function ChatComponent() {
 
         // first setting data on own tree
         firebaseApp
-        .database()
-        .ref("Chats")
-        .child(firebaseApp.auth().currentUser.uid)
-        .push({"msg" : chatQuery , "from" : firebaseApp.auth().currentUser.uid , "to" : chatState.currentChatUserId})
-        .then(data => {})
-        .catch(err => toast.error("Something went wrong please try again later", { position: toast.POSITION.BOTTOM_CENTER }));
+            .database()
+            .ref("Chats")
+            .child(firebaseApp.auth().currentUser.uid)
+            .push({ "msg": chatQuery, "from": firebaseApp.auth().currentUser.uid, "to": chatState.currentChatUserId })
+            .then(data => { })
+            .catch(err => toast.error("Something went wrong please try again later", { position: toast.POSITION.BOTTOM_CENTER }));
 
         // setting data for receiver node
         firebaseApp
-        .database()
-        .ref("Chats")
-        .child(chatState.currentChatUserId)
-        .push({"msg" : chatQuery , "from" : firebaseApp.auth().currentUser.uid , "to" : chatState.currentChatUserId})
-        .then(data => {})
-        .catch(err => toast.error("Something went wrong please try again later", { position: toast.POSITION.BOTTOM_CENTER }));
+            .database()
+            .ref("Chats")
+            .child(chatState.currentChatUserId)
+            .push({ "msg": chatQuery, "from": firebaseApp.auth().currentUser.uid, "to": chatState.currentChatUserId })
+            .then(data => { })
+            .catch(err => toast.error("Something went wrong please try again later", { position: toast.POSITION.BOTTOM_CENTER }));
 
         setChatQuery('');
     }
@@ -73,11 +76,15 @@ function ChatComponent() {
             </div>
             <div className="chat-list-container">
                 <div className="chat-data-list">
-
+                    <ChatList chats={chatState.chats} currentChatId={chatState.currentChatUserId}/>
                 </div>
                 <div className="chat-data-controllers">
                     <div className="send-msg-input">
-                        <input onChange={(e) => setChatQuery(e.target.value)} />
+                        <input onChange={(e) => setChatQuery(e.target.value)} value={chatQuery} onKeyPress={(e) => {
+                            if (e.which === 13 || e.keyCode === 13) {
+                                sendMsg();
+                            }
+                        }} />
                     </div>
                     <div className="send-btn-container">
                         <div className="send-btn-wrapper" onClick={sendMsg}>
